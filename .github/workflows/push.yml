@@ -1,0 +1,16 @@
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v3
+      - name: Setup bazel
+        uses: bazel-contrib/setup-bazel@0.9.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          external-cache: true
+          repository-cache: true
+      - run: bazel run @unpinned_cmaven//:pin
+name: push
+"on": push
