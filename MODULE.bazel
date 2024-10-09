@@ -1,0 +1,21 @@
+module(
+    name = "c",
+    version = "1.0",
+)
+
+bazel_dep(name = "rules_jvm_external", version = "6.4")
+bazel_dep(name = "a", version = "1.0")
+bazel_dep(name = "b", version = "1.0.1")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "cmaven",
+    artifacts = [
+        "com.google.guava:guava:28.0-jre",
+    ],
+    lock_file = "@c//:maven_install.json",
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+use_repo(maven, "cmaven", "unpinned_cmaven")
